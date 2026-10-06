@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Find Blood | HemoBridge</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff5f5;
+            color: #222;
+        }
+
+        .page {
+            padding: 40px 22px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1550px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 45px;
+            margin-bottom: 10px;
+            color: #c62828;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .search-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+            margin-bottom: 45px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .select-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 17px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 18px;
+            background: white;
+        }
+
+        .search-btn,
+        .clear-btn {
+            padding: 17px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .search-btn {
+            background: #c62828;
+            color: white;
+        }
+
+        .search-btn:hover {
+            background: #a91f1f;
+        }
+
+        .clear-btn {
+            background: #eeeeee;
+            color: #222;
+        }
+
+        .clear-btn:hover {
+            background: #dddddd;
+        }
+
+        .section-title {
+            font-size: 35px;
+            margin-bottom: 30px;
+        }
+
+        .blood-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+        }
+
+        .blood-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px 20px;
+            text-align: center;
+            border-top: 7px solid #c62828;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        .blood-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: #c62828;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .units {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .units-label {
+            color: #777;
+            font-size: 18px;
+        }
+
+        .available {
+            color: #218838;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+        .unavailable {
+            color: #c62828;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+
+        .request-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 22px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .request-btn:hover {
+            background: #a91f1f;
+        }
+
+        .empty {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 15px;
+            color: #666;
+            font-size: 20px;
+        }
+
+        @media (max-width: 1100px) {
+
+            .blood-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .search-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .blood-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 35px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+    <div class="container">
+
+
+        <div class="header">
+
+            <h1>
+                Find Blood
+            </h1>
+
+            <p>
+                Check available blood units across HemoBridge.
+            </p>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <form
+                method="GET"
+                class="search-form"
+            >
+
+                <div class="select-group">
+
+                    <label for="blood_group">
+                        Select Blood Group
+                    </label>
+
+                    <select
+                        name="blood_group"
+                        id="blood_group"
+                    >
+
+                        <option value="">
+                            All Blood Groups
+                        </option>
+
+                        <option
+                            value="A+"
+                            {% if selected_blood_group == "A+" %}selected{% endif %}
+                        >
+                            A+
+                        </option>
+
+                        <option
+                            value="A-"
+                            {% if selected_blood_group == "A-" %}selected{% endif %}
+                        >
+                            A-
+                        </option>
+
+                        <option
+                            value="B+"
+                            {% if selected_blood_group == "B+" %}selected{% endif %}
+                        >
+                            B+
+                        </option>
+
+                        <option
+                            value="B-"
+                            {% if selected_blood_group == "B-" %}selected{% endif %}
+                        >
+                            B-
+                        </option>
+
+                        <option
+                            value="AB+"
+                            {% if selected_blood_group == "AB+" %}selected{% endif %}
+                        >
+                            AB+
+                        </option>
+
+                        <option
+                            value="AB-"
+                            {% if selected_blood_group == "AB-" %}selected{% endif %}
+                        >
+                            AB-
+                        </option>
+
+                        <option
+                            value="O+"
+                            {% if selected_blood_group == "O+" %}selected{% endif %}
+                        >
+                            O+
+                        </option>
+
+                        <option
+                            value="O-"
+                            {% if selected_blood_group == "O-" %}selected{% endif %}
+                        >
+                            O-
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="search-btn"
+                >
+                    Search Blood
+                </button>
+
+
+                <a
+                    href="{% url 'blood_availability' %}"
+                    class="clear-btn"
+                >
+                    Clear
+                </a>
+
+
+            </form>
+
+        </div>
+
+
+        <h2 class="section-title">
+            Available Blood
+        </h2>
+
+
+        {% if blood_inventory %}
+
+            <div class="blood-grid">
+
+
+                {% for blood in blood_inventory %}
+
+                    <div class="blood-card">
+
+
+                        <div class="blood-circle">
+                            {{ blood.blood_group }}
+                        </div>
+
+
+                        <div class="units">
+                            {{ blood.units_available }}
+                        </div>
+
+
+                        <div class="units-label">
+                            Units Available
+                        </div>
+
+
+                        {% if blood.units_available > 0 %}
+
+                            <div class="available">
+                                ✓ Available
+                            </div>
+
+
+                            <a
+                                href="{% url 'blood_request' %}?blood_group={{ blood.blood_group }}"
+                                class="request-btn"
+                            >
+                                Request Blood
+                            </a>
+
+
+                        {% else %}
+
+                            <div class="unavailable">
+                                ✕ Currently Unavailable
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+
+                No blood inventory found.
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

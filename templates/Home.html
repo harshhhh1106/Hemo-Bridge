@@ -1,0 +1,246 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HemoBridge | Blood Bank Management System</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            <span>🩸</span> HemoBridge
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+            <a href="#" class="login-btn">Login</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Hero -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="tagline">
+                CONNECTING DONORS • SAVING LIVES
+            </div>
+
+            <h1>
+                Every Drop of Blood
+                <span>Can Save a Life.</span>
+            </h1>
+
+            <p>
+                HemoBridge is a modern blood bank management system
+                connecting donors, hospitals and patients through
+                one reliable platform.
+            </p>
+
+            <div class="buttons">
+
+                <a
+                    href="{% url 'blood_availability' %}"
+                    class="primary-btn"
+                >
+                    Find Blood
+                </a>
+
+                <a href="{% url 'donor_register' %}" class="secondary-btn">
+                     Become a Donor
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="blood-card">
+
+            <div class="blood-drop">
+                🩸
+            </div>
+
+            <h2>Blood Availability</h2>
+
+            <p>Check available blood groups.</p>
+
+            <div class="blood-grid">
+
+                <div>
+                    <strong>A+</strong>
+                    <small>Available</small>
+                </div>
+
+                <div>
+                    <strong>B+</strong>
+                    <small>Available</small>
+                </div>
+
+                <div>
+                    <strong>O+</strong>
+                    <small>Available</small>
+                </div>
+
+                <div>
+                    <strong>AB+</strong>
+                    <small>Available</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About -->
+
+    <section class="about" id="about">
+
+        <div class="section-label">
+            ABOUT HEMOBRIDGE
+        </div>
+
+        <h2>
+            Bridging the gap between
+            <span>donors and those in need.</span>
+        </h2>
+
+        <p>
+            HemoBridge provides a centralized platform for managing
+            blood donors, blood inventory, hospitals and blood requests.
+            It helps make blood availability information easier to access
+            and simplifies the blood management process.
+        </p>
+
+    </section>
+
+
+    <!-- Services -->
+
+    <section class="services" id="services">
+
+        <div class="section-label">
+            OUR SERVICES
+        </div>
+
+        <h2>Everything in One Place</h2>
+
+        <div class="service-container">
+
+            <div class="service-card">
+                <div class="icon">🔎</div>
+                <h3>Find Blood</h3>
+                <p>
+                    Search available blood groups quickly.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🩸</div>
+                <h3>Donor Management</h3>
+                <p>
+                    Register donors and maintain donation records.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">🏥</div>
+                <h3>Hospital Requests</h3>
+                <p>
+                    Hospitals can submit blood requirements.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="icon">📊</div>
+                <h3>Blood Inventory</h3>
+                <p>
+                    Monitor blood stock and availability.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- How it works -->
+
+    <section class="how-it-works">
+
+        <div class="section-label">
+            HOW IT WORKS
+        </div>
+
+        <h2>Simple. Fast. Reliable.</h2>
+
+        <div class="steps">
+
+            <div class="step">
+                <div class="number">01</div>
+                <h3>Register</h3>
+                <p>
+                    Donors and hospitals register on HemoBridge.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="number">02</div>
+                <h3>Connect</h3>
+                <p>
+                    Blood requirements are connected with available stock.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="number">03</div>
+                <h3>Save Lives</h3>
+                <p>
+                    Blood reaches people who need it.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer id="contact">
+
+        <h2>🩸 HemoBridge</h2>
+
+        <p>Connecting Donors. Saving Lives.</p>
+
+        <div class="copyright">
+            © 2026 HemoBridge Blood Bank Management System
+        </div>
+
+    </footer>
+
+
+    <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

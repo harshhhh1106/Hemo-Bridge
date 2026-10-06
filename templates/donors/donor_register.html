@@ -1,0 +1,477 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Become a Donor | HemoBridge</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff5f5;
+            color: #222;
+        }
+
+        .form-page {
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-container h1 {
+            color: #c62828;
+            margin-bottom: 10px;
+            font-size: 42px;
+        }
+
+        .form-container > p {
+            color: #666;
+            font-size: 20px;
+            margin-bottom: 35px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d5d5d5;
+            border-radius: 9px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #c62828;
+            box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
+        }
+
+        .error-box {
+            background: #ffe5e5;
+            color: #b71c1c;
+            border: 1px solid #ef9a9a;
+            padding: 15px 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .field-error {
+            color: #c62828;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .availability-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff8f8;
+            border-radius: 8px;
+        }
+
+        .availability-box label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .availability-box input {
+            width: auto;
+        }
+
+        .submit-btn {
+            margin-top: 30px;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 8px;
+            background: #c62828;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #a91f1f;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #c62828;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .form-container h1 {
+                font-size: 30px;
+            }
+
+            .form-container > p {
+                font-size: 16px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="form-page">
+
+        <div class="form-container">
+
+            <h1>
+                Become a HemoBridge Donor 🩸
+            </h1>
+
+            <p>
+                Register as a blood donor and help someone
+                in need. Your donation can save lives.
+            </p>
+
+
+            <!-- GENERAL FORM ERRORS -->
+
+            {% if form.non_field_errors %}
+
+                <div class="error-box">
+
+                    <strong>
+                        Please correct the following:
+                    </strong>
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.name.id_for_label }}">
+                            Full Name
+                        </label>
+
+                        {{ form.name }}
+
+                        {% if form.name.errors %}
+
+                            <div class="field-error">
+                                {{ form.name.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.email.id_for_label }}">
+                            Email
+                        </label>
+
+                        {{ form.email }}
+
+                        {% if form.email.errors %}
+
+                            <div class="field-error">
+                                {{ form.email.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.phone.id_for_label }}">
+                            Phone Number
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% if form.phone.errors %}
+
+                            <div class="field-error">
+                                {{ form.phone.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.date_of_birth.id_for_label }}">
+                            Date of Birth
+                        </label>
+
+                        {{ form.date_of_birth }}
+
+                        {% if form.date_of_birth.errors %}
+
+                            <div class="field-error">
+                                {{ form.date_of_birth.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.gender.id_for_label }}">
+                            Gender
+                        </label>
+
+                        {{ form.gender }}
+
+                        {% if form.gender.errors %}
+
+                            <div class="field-error">
+                                {{ form.gender.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- BLOOD GROUP -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.blood_group.id_for_label }}">
+                            Blood Group
+                        </label>
+
+                        {{ form.blood_group }}
+
+                        {% if form.blood_group.errors %}
+
+                            <div class="field-error">
+                                {{ form.blood_group.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full">
+
+                        <label for="{{ form.address.id_for_label }}">
+                            Address
+                        </label>
+
+                        {{ form.address }}
+
+                        {% if form.address.errors %}
+
+                            <div class="field-error">
+                                {{ form.address.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- CITY -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.city.id_for_label }}">
+                            City
+                        </label>
+
+                        {{ form.city }}
+
+                        {% if form.city.errors %}
+
+                            <div class="field-error">
+                                {{ form.city.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- LAST DONATION -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.last_donation_date.id_for_label }}">
+                            Last Donation Date
+                        </label>
+
+                        {{ form.last_donation_date }}
+
+                        {% if form.last_donation_date.errors %}
+
+                            <div class="field-error">
+                                {{ form.last_donation_date.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- AVAILABILITY -->
+
+                <div class="availability-box">
+
+                    <label>
+
+                        {{ form.is_available }}
+
+                        <span>
+                            I am currently available to donate blood
+                        </span>
+
+                    </label>
+
+                    {% if form.is_available.errors %}
+
+                        <div class="field-error">
+                            {{ form.is_available.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    Register as Donor
+                </button>
+
+
+            </form>
+
+
+            <a
+                href="{% url 'home' %}"
+                class="back-link"
+            >
+                ← Back to HemoBridge
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Request Blood | HemoBridge</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff5f5;
+            color: #222;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .blood-icon {
+            font-size: 60px;
+        }
+
+        h1 {
+            color: #c62828;
+            font-size: 40px;
+            margin: 10px 0;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 17px;
+        }
+
+        .selected-blood {
+            background: #fff0f0;
+            border: 1px solid #f0b5b5;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: #c62828;
+            font-size: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #222;
+            font-size: 16px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #c62828;
+            box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .error {
+            color: #c62828;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 17px;
+            border: none;
+            border-radius: 9px;
+            background: #c62828;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #a91f1f;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #c62828;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 650px) {
+
+            .card {
+                padding: 25px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="header">
+
+                <div class="blood-icon">
+                    🩸
+                </div>
+
+                <h1>
+                    Request Blood
+                </h1>
+
+                <p>
+                    Submit a blood request through HemoBridge.
+                </p>
+
+            </div>
+
+
+            {% if blood_group %}
+
+                <div class="selected-blood">
+
+                    Selected Blood Group:
+                    {{ blood_group }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                {% if form.non_field_errors %}
+
+                    <div class="error">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Hospital
+                        </label>
+
+                        {{ form.hospital }}
+
+                        {% for error in form.hospital.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Patient Name
+                        </label>
+
+                        {{ form.patient_name }}
+
+                        {% for error in form.patient_name.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Blood Group
+                        </label>
+
+                        {{ form.blood_group }}
+
+                        {% for error in form.blood_group.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Units Required
+                        </label>
+
+                        {{ form.units_required }}
+
+                        {% for error in form.units_required.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Urgency
+                        </label>
+
+                        {{ form.urgency }}
+
+                        {% for error in form.urgency.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Reason for Blood Requirement
+                        </label>
+
+                        {{ form.reason }}
+
+                        {% for error in form.reason.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    Submit Blood Request
+                </button>
+
+
+            </form>
+
+
+            <a
+                href="{% url 'blood_availability' %}"
+                class="back-link"
+            >
+                ← Back to Blood Availability
+            </a>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

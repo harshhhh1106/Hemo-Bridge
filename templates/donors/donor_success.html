@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Registration Successful | HemoBridge</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff5f5;
+        }
+
+        .success-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-card {
+            width: 100%;
+            max-width: 600px;
+            padding: 50px;
+            background: white;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-icon {
+            font-size: 75px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #c62828;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .home-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 28px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .home-btn:hover {
+            background: #a91f1f;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="success-container">
+
+        <div class="success-card">
+
+            <div class="success-icon">
+                🩸
+            </div>
+
+            <h1>
+                Registration Successful!
+            </h1>
+
+            <p>
+                Thank you for registering as a HemoBridge donor.
+            </p>
+
+            <p>
+                Your donor information has been successfully
+                recorded in the HemoBridge system.
+            </p>
+
+            <p>
+                Your contribution can help save someone's life.
+            </p>
+
+            <a
+                href="{% url 'home' %}"
+                class="home-btn"
+            >
+                Return to HemoBridge
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

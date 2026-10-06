@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Request Submitted | HemoBridge</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff5f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            width: 90%;
+            max-width: 700px;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .icon {
+            font-size: 70px;
+        }
+
+        h1 {
+            color: #c62828;
+            font-size: 38px;
+            margin: 20px 0;
+        }
+
+        p {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .status {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 25px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #a91f1f;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="card">
+
+        <div class="icon">
+            🩸
+        </div>
+
+        <h1>
+            Request Submitted Successfully!
+        </h1>
+
+        <p>
+            Your blood request has been successfully
+            submitted to the HemoBridge system.
+        </p>
+
+        <div class="status">
+            Status: Pending
+        </div>
+
+        <p>
+            Your request will be reviewed by the
+            blood bank administrator.
+        </p>
+
+        <a
+            href="{% url 'blood_availability' %}"
+            class="btn"
+        >
+            Back to Find Blood
+        </a>
+
+    </div>
+
+</body>
+
+</html>
