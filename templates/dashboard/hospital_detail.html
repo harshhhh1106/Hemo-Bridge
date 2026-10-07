@@ -1,0 +1,576 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ hospital.name }} | HemoBridge</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #8b0000;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h1 {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .nav {
+            list-style: none;
+        }
+
+        .nav li {
+            margin-bottom: 10px;
+        }
+
+        .nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px 15px;
+            border-radius: 8px;
+        }
+
+        .nav a:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .nav a.active {
+            background: white;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h2 {
+            font-size: 30px;
+            color: #333;
+        }
+
+        .topbar p {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #8b0000;
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #6f0000;
+        }
+
+        /* CARD */
+
+        .hospital-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .hospital-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .hospital-name {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hospital-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            background: #ffe5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .hospital-name h1 {
+            font-size: 26px;
+            color: #333;
+        }
+
+        .hospital-name p {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* STATUS */
+
+        .verified,
+        .unverified {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .verified {
+            background: #e8f8ee;
+            color: #16803c;
+        }
+
+        .unverified {
+            background: #fff3e0;
+            color: #b45f06;
+        }
+
+        /* DETAILS */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .detail {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 9px;
+            padding: 18px;
+        }
+
+        .detail-label {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        /* ACTIONS */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .verify-button,
+        .unverify-button {
+            border: none;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .verify-button {
+            background: #16803c;
+        }
+
+        .verify-button:hover {
+            background: #10632f;
+        }
+
+        .unverify-button {
+            background: #b45f06;
+        }
+
+        .unverify-button:hover {
+            background: #8f4b04;
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .hospital-header {
+                flex-direction: column;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <h1>🩸 HemoBridge</h1>
+
+        <p>Blood Bank Management</p>
+
+    </div>
+
+
+    <ul class="nav">
+
+        <li>
+            <a href="{% url 'dashboard' %}">
+                📊 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'blood_availability' %}">
+                🩸 Blood Inventory
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'dashboard_requests' %}">
+                📋 Blood Requests
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'donor_management' %}">
+                👤 Donor Management
+            </a>
+        </li>
+
+        <li>
+            <a
+                href="{% url 'hospital_management' %}"
+                class="active"
+            >
+                🏥 Hospital Management
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'donor_register' %}">
+                ➕ Donor Registration
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'home' %}">
+                🏠 Main Website
+            </a>
+        </li>
+
+        <li>
+            <a href="/admin/">
+                ⚙️ Django Admin
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <div class="topbar">
+
+        <div>
+
+            <h2>
+                🏥 Hospital Details
+            </h2>
+
+            <p>
+                View complete hospital information.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'hospital_management' %}"
+            class="back-button"
+        >
+            ← Hospital Management
+        </a>
+
+    </div>
+
+
+    <div class="hospital-card">
+
+
+        <!-- HOSPITAL HEADER -->
+
+        <div class="hospital-header">
+
+
+            <div class="hospital-name">
+
+                <div class="hospital-icon">
+                    🏥
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        {{ hospital.name }}
+                    </h1>
+
+                    <p>
+                        Registered Hospital
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if hospital.is_verified %}
+
+                <span class="verified">
+                    🟢 Verified Hospital
+                </span>
+
+            {% else %}
+
+                <span class="unverified">
+                    🟠 Unverified Hospital
+                </span>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- HOSPITAL INFORMATION -->
+
+        <div class="details-grid">
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Registration Number
+                </div>
+
+                <div class="detail-value">
+                    {{ hospital.registration_number }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Email Address
+                </div>
+
+                <div class="detail-value">
+                    {{ hospital.email }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Phone Number
+                </div>
+
+                <div class="detail-value">
+                    {{ hospital.phone }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    City
+                </div>
+
+                <div class="detail-value">
+                    {{ hospital.city }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Address
+                </div>
+
+                <div class="detail-value">
+                    {{ hospital.address }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-label">
+                    Registration Date
+                </div>
+
+                <div class="detail-value">
+                    {{ hospital.created_at|date:"d M Y, h:i A" }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- VERIFICATION ACTION -->
+
+        <div class="actions">
+
+
+            <form
+                method="post"
+                action="{% url 'toggle_hospital_verification' hospital.id %}"
+            >
+
+                {% csrf_token %}
+
+
+                {% if hospital.is_verified %}
+
+                    <button
+                        type="submit"
+                        class="unverify-button"
+                        onclick="return confirm('Are you sure you want to mark this hospital as unverified?');"
+                    >
+                        ❌ Mark as Unverified
+                    </button>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        class="verify-button"
+                        onclick="return confirm('Verify this hospital?');"
+                    >
+                        ✅ Verify Hospital
+                    </button>
+
+                {% endif %}
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

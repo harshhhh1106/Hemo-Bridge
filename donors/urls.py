@@ -4,7 +4,6 @@ from . import views
 
 
 urlpatterns = [
-
     path(
         "register/",
         views.donor_register,
@@ -12,9 +11,8 @@ urlpatterns = [
     ),
 
     path(
-        "success/",
-        views.donor_success,
-        name="donor_success"
+        "management/",
+        views.donor_management,
+        name="donor_management"
     ),
-
 ]

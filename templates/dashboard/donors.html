@@ -1,0 +1,1317 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Donor Management | HemoBridge</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+
+            background: #f4f6f9;
+
+            color: #222;
+
+        }
+
+
+        /* ==================================================
+           SIDEBAR
+        ================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            width: 240px;
+
+            height: 100vh;
+
+            background: #8b0000;
+
+            color: white;
+
+            padding: 25px 15px;
+
+        }
+
+
+        .logo {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .logo h1 {
+
+            font-size: 27px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .logo p {
+
+            font-size: 13px;
+
+            opacity: 0.8;
+
+        }
+
+
+        .nav {
+
+            list-style: none;
+
+        }
+
+
+        .nav li {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .nav a {
+
+            display: block;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 13px 15px;
+
+            border-radius: 8px;
+
+            transition: 0.3s;
+
+        }
+
+
+        .nav a:hover {
+
+            background:
+                rgba(255, 255, 255, 0.15);
+
+        }
+
+
+        .nav a.active {
+
+            background: white;
+
+            color: #8b0000;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ==================================================
+           MAIN CONTENT
+        ================================================== */
+
+        .main {
+
+            margin-left: 240px;
+
+            padding: 30px;
+
+        }
+
+
+        /* ==================================================
+           TOPBAR
+        ================================================== */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .topbar h2 {
+
+            font-size: 30px;
+
+            color: #333;
+
+        }
+
+
+        .topbar p {
+
+            color: #777;
+
+            margin-top: 5px;
+
+        }
+
+
+        .admin-badge {
+
+            background: white;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.08);
+
+            font-weight: bold;
+
+        }
+
+
+        /* ==================================================
+           STATISTICS
+        ================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.08);
+
+            border-left:
+                5px solid #8b0000;
+
+        }
+
+
+        .stat-card h3 {
+
+            color: #777;
+
+            font-size: 15px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .stat-number {
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            color: #8b0000;
+
+        }
+
+
+        .stat-icon {
+
+            font-size: 24px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* ==================================================
+           FILTER SECTION
+        ================================================== */
+
+        .section {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            margin-bottom: 30px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .section-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .section-header h2 {
+
+            font-size: 22px;
+
+            color: #333;
+
+        }
+
+
+        .section-header p {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-top: 5px;
+
+        }
+
+
+        .filters {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            align-items: center;
+
+        }
+
+
+        .search-box {
+
+            flex: 1;
+
+            min-width: 280px;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+
+            font-size: 14px;
+
+            outline: none;
+
+        }
+
+
+        .search-box:focus {
+
+            border-color: #8b0000;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(139, 0, 0, 0.08);
+
+        }
+
+
+        .city-box {
+
+            padding: 12px 14px;
+
+            border:
+                1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+
+            font-size: 14px;
+
+            outline: none;
+
+            min-width: 150px;
+
+        }
+
+
+        .city-box:focus {
+
+            border-color: #8b0000;
+
+        }
+
+
+        .filters select {
+
+            padding: 12px 14px;
+
+            border:
+                1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            min-width: 160px;
+
+        }
+
+
+        .filters select:focus {
+
+            outline: none;
+
+            border-color: #8b0000;
+
+        }
+
+
+        /* ==================================================
+           DONOR TABLE
+        ================================================== */
+
+        .table-container {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            min-width: 1050px;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th {
+
+            background: #8b0000;
+
+            color: white;
+
+            padding: 14px;
+
+            text-align: left;
+
+            font-size: 13px;
+
+        }
+
+
+        td {
+
+            padding: 15px 14px;
+
+            border-bottom:
+                1px solid #eee;
+
+            font-size: 14px;
+
+        }
+
+
+        tbody tr:hover {
+
+            background: #fafafa;
+
+        }
+
+
+        /* ==================================================
+           BLOOD GROUP
+        ================================================== */
+
+        .blood-group {
+
+            display: inline-block;
+
+            background: #ffe5e5;
+
+            color: #a00000;
+
+            padding: 6px 10px;
+
+            border-radius: 15px;
+
+            font-weight: bold;
+
+            font-size: 12px;
+
+        }
+
+
+        /* ==================================================
+           AVAILABILITY
+        ================================================== */
+
+        .available {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            background: #e8f8ee;
+
+            color: #16803c;
+
+            padding: 6px 11px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+        }
+
+
+        .unavailable {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            background: #f3f3f3;
+
+            color: #777;
+
+            padding: 6px 11px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ==================================================
+           EMPTY STATE
+        ================================================== */
+
+        .empty {
+
+            text-align: center;
+
+            padding: 60px 20px;
+
+            color: #777;
+
+        }
+
+
+        .empty-icon {
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .empty h3 {
+
+            color: #444;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 20px;
+
+            }
+
+
+            .topbar {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 10px;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .stats {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .search-box {
+
+                width: 100%;
+
+                min-width: 100%;
+
+            }
+
+
+            .city-box {
+
+                width: 100%;
+
+            }
+
+
+            .filters select {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     SIDEBAR
+====================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <h1>🩸 HemoBridge</h1>
+
+        <p>Blood Bank Management</p>
+
+    </div>
+
+
+    <ul class="nav">
+
+        <li>
+
+            <a href="{% url 'dashboard' %}">
+
+                📊 Dashboard
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="{% url 'blood_availability' %}">
+
+                🩸 Blood Inventory
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="{% url 'dashboard_requests' %}">
+
+                📋 Blood Requests
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="{% url 'donor_management' %}"
+               class="active">
+
+                👤 Donor Management
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="{% url 'donor_register' %}">
+
+                ➕ Donor Registration
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="{% url 'home' %}">
+
+                🏠 Main Website
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="/admin/">
+
+                ⚙️ Django Admin
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</aside>
+
+
+<!-- ======================================================
+     MAIN CONTENT
+====================================================== -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h2>👤 Donor Management</h2>
+
+            <p>
+                Manage and view all registered blood donors.
+            </p>
+
+        </div>
+
+
+        <div class="admin-badge">
+
+            🛡️ Administrator
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         STATISTICS
+    ================================================== -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+            <h3>Total Donors</h3>
+
+            <div class="stat-number">
+                {{ total_donors }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+            <h3>Available Donors</h3>
+
+            <div class="stat-number">
+                {{ available_donors }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🔴
+            </div>
+
+            <h3>Unavailable Donors</h3>
+
+            <div class="stat-number">
+                {{ unavailable_donors }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🩸
+            </div>
+
+            <h3>Blood Groups</h3>
+
+            <div class="stat-number">
+                {{ blood_groups_count }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==================================================
+         DONOR MANAGEMENT SECTION
+    ================================================== -->
+
+    <section class="section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>Registered Donors</h2>
+
+                <p>
+                    Search and filter registered donors.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTERS -->
+
+        <form
+            method="get"
+            class="filters"
+            id="donorFilterForm"
+        >
+
+
+            <input
+                type="text"
+                name="search"
+                class="search-box"
+                placeholder="🔎 Search donor, email, phone or city..."
+                value="{{ search_query }}"
+                autocomplete="off"
+            >
+
+
+            <select name="blood_group">
+
+                <option value="">
+                    All Blood Groups
+                </option>
+
+                <option value="A+"
+                    {% if selected_blood_group == "A+" %}
+                        selected
+                    {% endif %}
+                >
+                    A+
+                </option>
+
+                <option value="A-"
+                    {% if selected_blood_group == "A-" %}
+                        selected
+                    {% endif %}
+                >
+                    A-
+                </option>
+
+                <option value="B+"
+                    {% if selected_blood_group == "B+" %}
+                        selected
+                    {% endif %}
+                >
+                    B+
+                </option>
+
+                <option value="B-"
+                    {% if selected_blood_group == "B-" %}
+                        selected
+                    {% endif %}
+                >
+                    B-
+                </option>
+
+                <option value="AB+"
+                    {% if selected_blood_group == "AB+" %}
+                        selected
+                    {% endif %}
+                >
+                    AB+
+                </option>
+
+                <option value="AB-"
+                    {% if selected_blood_group == "AB-" %}
+                        selected
+                    {% endif %}
+                >
+                    AB-
+                </option>
+
+                <option value="O+"
+                    {% if selected_blood_group == "O+" %}
+                        selected
+                    {% endif %}
+                >
+                    O+
+                </option>
+
+                <option value="O-"
+                    {% if selected_blood_group == "O-" %}
+                        selected
+                    {% endif %}
+                >
+                    O-
+                </option>
+
+            </select>
+
+
+            <input
+                type="text"
+                name="city"
+                class="city-box"
+                placeholder="📍 City"
+                value="{{ selected_city }}"
+                autocomplete="off"
+            >
+
+
+            <select name="availability">
+
+                <option value="">
+                    All Availability
+                </option>
+
+                <option value="available"
+                    {% if selected_availability == "available" %}
+                        selected
+                    {% endif %}
+                >
+                    🟢 Available
+                </option>
+
+                <option value="unavailable"
+                    {% if selected_availability == "unavailable" %}
+                        selected
+                    {% endif %}
+                >
+                    🔴 Unavailable
+                </option>
+
+            </select>
+
+
+        </form>
+
+
+    </section>
+
+
+    <!-- ==================================================
+         DONOR TABLE
+    ================================================== -->
+
+    <section class="section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>Donor List</h2>
+
+                <p>
+                    {% if search_query %}
+                        Results for "{{ search_query }}"
+                    {% else %}
+                        All registered donors
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+
+            {% if donors %}
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Donor</th>
+
+                        <th>Email</th>
+
+                        <th>Phone</th>
+
+                        <th>Blood Group</th>
+
+                        <th>Gender</th>
+
+                        <th>City</th>
+
+                        <th>Last Donation</th>
+
+                        <th>Availability</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for donor in donors %}
+
+
+                    <tr>
+
+
+                        <td>
+
+                            <strong>
+                                {{ donor.name }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            {{ donor.email }}
+                        </td>
+
+
+                        <td>
+                            {{ donor.phone }}
+                        </td>
+
+
+                        <td>
+
+                            <span class="blood-group">
+
+                                {{ donor.blood_group }}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            {{ donor.gender }}
+                        </td>
+
+
+                        <td>
+                            {{ donor.city }}
+                        </td>
+
+
+                        <td>
+
+                            {% if donor.last_donation_date %}
+
+                                {{ donor.last_donation_date|date:"d M Y" }}
+
+                            {% else %}
+
+                                Not donated yet
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if donor.is_available %}
+
+                                <span class="available">
+
+                                    🟢 Available
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="unavailable">
+
+                                    🔴 Unavailable
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+            {% else %}
+
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    👤
+                </div>
+
+                <h3>
+                    No donors found
+                </h3>
+
+
+                {% if search_query %}
+
+                    <p>
+                        No donors found for
+                        "{{ search_query }}".
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        There are currently no donors
+                        matching your filters.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<!-- ======================================================
+     AUTOMATIC FILTERING
+====================================================== -->
+
+<script>
+
+    const donorFilterForm =
+        document.getElementById(
+            "donorFilterForm"
+        );
+
+
+    const donorSearch =
+        document.querySelector(
+            'input[name="search"]'
+        );
+
+
+    const donorSelects =
+        document.querySelectorAll(
+            "#donorFilterForm select"
+        );
+
+
+    /* -----------------------------------------------
+       Dropdown filters
+    ------------------------------------------------ */
+
+    donorSelects.forEach(
+        function(select) {
+
+            select.addEventListener(
+                "change",
+                function() {
+
+                    donorFilterForm.submit();
+
+                }
+            );
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       Search while typing
+    ------------------------------------------------ */
+
+    let donorSearchTimer;
+
+
+    donorSearch.addEventListener(
+        "input",
+        function() {
+
+            clearTimeout(
+                donorSearchTimer
+            );
+
+
+            donorSearchTimer =
+                setTimeout(
+                    function() {
+
+                        donorFilterForm.submit();
+
+                    },
+                    500
+                );
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

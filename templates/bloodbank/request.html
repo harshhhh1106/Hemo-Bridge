@@ -1,0 +1,977 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Blood Requests | HemoBridge</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #8b0000;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h1 {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .nav {
+            list-style: none;
+        }
+
+        .nav li {
+            margin-bottom: 10px;
+        }
+
+        .nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav a.active {
+            background: white;
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h2 {
+            font-size: 30px;
+            color: #333;
+        }
+
+        .topbar p {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .admin-badge {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            font-weight: bold;
+        }
+
+        /* =========================
+           PAGE CARD
+        ========================= */
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 23px;
+            color: #333;
+        }
+
+        /* =========================
+           FILTERS
+        ========================= */
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filters select {
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .filter-button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #8b0000;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .filter-button:hover {
+            background: #650000;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th {
+            background: #f7f7f7;
+            padding: 14px;
+            text-align: left;
+            font-size: 13px;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        /* =========================
+           BADGES
+        ========================= */
+
+        .badge {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .normal {
+            background: #e8f0fe;
+            color: #174ea6;
+        }
+
+        .urgent {
+            background: #ffe5cc;
+            color: #b34700;
+        }
+
+        .emergency {
+            background: #f8d7da;
+            color: #a00000;
+        }
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .actions {
+            display: flex;
+            gap: 7px;
+        }
+
+        .action-button {
+            border: none;
+            padding: 7px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .approve {
+            background: #198754;
+            color: white;
+        }
+
+        .approve:hover {
+            background: #146c43;
+        }
+
+        .reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .reject:hover {
+            background: #bb2d3b;
+        }
+
+        .disabled {
+            background: #eee;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .back-button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 7px;
+            background: #eee;
+            color: #333;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .back-button:hover {
+            background: #ddd;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <h1>🩸 HemoBridge</h1>
+
+            <p>
+                Blood Bank Management
+            </p>
+
+        </div>
+
+
+        <ul class="nav">
+
+            <li>
+
+                <a href="{% url 'dashboard' %}">
+
+                    📊 Dashboard
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="{% url 'blood_availability' %}">
+
+                    🩸 Blood Inventory
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="{% url 'dashboard_requests' %}"
+                   class="active">
+
+                    📋 Blood Requests
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="{% url 'donor_register' %}">
+
+                    👤 Donor Registration
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="{% url 'home' %}">
+
+                    🏠 Main Website
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="/admin/">
+
+                    ⚙️ Django Admin
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h2>
+                    Blood Request Management
+                </h2>
+
+                <p>
+                    Review and manage blood requests received from hospitals.
+                </p>
+
+            </div>
+
+
+            <div class="admin-badge">
+
+                👨‍💼 Administrator
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             REQUEST SECTION
+        ========================= -->
+
+        <section class="section">
+
+
+            <div class="section-header">
+
+                <h2>
+                    📋 All Blood Requests
+                </h2>
+
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="back-button"
+                >
+
+                    ← Back to Dashboard
+
+                </a>
+
+            </div>
+
+
+
+            <!-- FILTERS -->
+
+            <form method="get" class="filters">
+
+
+                <select name="status">
+
+                    <option value="">
+                        All Statuses
+                    </option>
+
+                    <option
+                        value="Pending"
+                        {% if selected_status == "Pending" %}selected{% endif %}
+                    >
+                        Pending
+                    </option>
+
+                    <option
+                        value="Approved"
+                        {% if selected_status == "Approved" %}selected{% endif %}
+                    >
+                        Approved
+                    </option>
+
+                    <option
+                        value="Rejected"
+                        {% if selected_status == "Rejected" %}selected{% endif %}
+                    >
+                        Rejected
+                    </option>
+
+                    <option
+                        value="Completed"
+                        {% if selected_status == "Completed" %}selected{% endif %}
+                    >
+                        Completed
+                    </option>
+
+                </select>
+
+
+
+                <select name="urgency">
+
+                    <option value="">
+                        All Urgency Levels
+                    </option>
+
+                    <option
+                        value="Normal"
+                        {% if selected_urgency == "Normal" %}selected{% endif %}
+                    >
+                        Normal
+                    </option>
+
+                    <option
+                        value="Urgent"
+                        {% if selected_urgency == "Urgent" %}selected{% endif %}
+                    >
+                        Urgent
+                    </option>
+
+                    <option
+                        value="Emergency"
+                        {% if selected_urgency == "Emergency" %}selected{% endif %}
+                    >
+                        Emergency
+                    </option>
+
+                </select>
+
+
+
+                <select name="blood_group">
+
+                    <option value="">
+                        All Blood Groups
+                    </option>
+
+                    <option
+                        value="A+"
+                        {% if selected_blood_group == "A+" %}selected{% endif %}
+                    >
+                        A+
+                    </option>
+
+                    <option
+                        value="A-"
+                        {% if selected_blood_group == "A-" %}selected{% endif %}
+                    >
+                        A-
+                    </option>
+
+                    <option
+                        value="B+"
+                        {% if selected_blood_group == "B+" %}selected{% endif %}
+                    >
+                        B+
+                    </option>
+
+                    <option
+                        value="B-"
+                        {% if selected_blood_group == "B-" %}selected{% endif %}
+                    >
+                        B-
+                    </option>
+
+                    <option
+                        value="AB+"
+                        {% if selected_blood_group == "AB+" %}selected{% endif %}
+                    >
+                        AB+
+                    </option>
+
+                    <option
+                        value="AB-"
+                        {% if selected_blood_group == "AB-" %}selected{% endif %}
+                    >
+                        AB-
+                    </option>
+
+                    <option
+                        value="O+"
+                        {% if selected_blood_group == "O+" %}selected{% endif %}
+                    >
+                        O+
+                    </option>
+
+                    <option
+                        value="O-"
+                        {% if selected_blood_group == "O-" %}selected{% endif %}
+                    >
+                        O-
+                    </option>
+
+                </select>
+
+
+
+                <button
+                    type="submit"
+                    class="filter-button"
+                >
+
+                    Filter
+
+                </button>
+
+            </form>
+
+
+
+            <!-- =========================
+                 REQUEST TABLE
+            ========================= -->
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Patient
+                            </th>
+
+                            <th>
+                                Hospital
+                            </th>
+
+                            <th>
+                                Blood Group
+                            </th>
+
+                            <th>
+                                Units
+                            </th>
+
+                            <th>
+                                Urgency
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Request Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for blood_request in blood_requests %}
+
+                        <tr>
+
+
+                            <!-- Patient -->
+
+                            <td>
+
+                                <strong>
+                                    {{ blood_request.patient_name }}
+                                </strong>
+
+                            </td>
+
+
+
+                            <!-- Hospital -->
+
+                            <td>
+
+                                {{ blood_request.hospital.name }}
+
+                            </td>
+
+
+
+                            <!-- Blood Group -->
+
+                            <td>
+
+                                <strong>
+                                    {{ blood_request.blood_group }}
+                                </strong>
+
+                            </td>
+
+
+
+                            <!-- Units -->
+
+                            <td>
+
+                                {{ blood_request.units_required }}
+
+                            </td>
+
+
+
+                            <!-- Urgency -->
+
+                            <td>
+
+
+                                {% if blood_request.urgency == "Emergency" %}
+
+                                    <span class="badge emergency">
+
+                                        Emergency
+
+                                    </span>
+
+
+                                {% elif blood_request.urgency == "Urgent" %}
+
+                                    <span class="badge urgent">
+
+                                        Urgent
+
+                                    </span>
+
+
+                                {% else %}
+
+                                    <span class="badge normal">
+
+                                        Normal
+
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+
+                            <!-- Status -->
+
+                            <td>
+
+
+                                {% if blood_request.status == "Pending" %}
+
+                                    <span class="badge pending">
+
+                                        Pending
+
+                                    </span>
+
+
+                                {% elif blood_request.status == "Approved" %}
+
+                                    <span class="badge approved">
+
+                                        Approved
+
+                                    </span>
+
+
+                                {% elif blood_request.status == "Rejected" %}
+
+                                    <span class="badge rejected">
+
+                                        Rejected
+
+                                    </span>
+
+
+                                {% elif blood_request.status == "Completed" %}
+
+                                    <span class="badge completed">
+
+                                        Completed
+
+                                    </span>
+
+
+                                {% endif %}
+
+
+                            </td>
+
+
+
+                            <!-- Request Date -->
+
+                            <td>
+
+                                {{ blood_request.request_date|date:"d M Y, h:i A" }}
+
+                            </td>
+
+
+
+                            <!-- Actions -->
+
+                            <td>
+
+
+                                {% if blood_request.status == "Pending" %}
+
+                                    <div class="actions">
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'approve_dashboard_request' blood_request.id %}"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="action-button approve"
+                                            >
+
+                                                ✓ Approve
+
+                                            </button>
+
+                                        </form>
+
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'reject_dashboard_request' blood_request.id %}"
+                                        >
+
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="action-button reject"
+                                            >
+
+                                                ✕ Reject
+
+                                            </button>
+
+                                        </form>
+
+
+                                    </div>
+
+
+                                {% else %}
+
+                                    <button
+                                        class="action-button disabled"
+                                        disabled
+                                    >
+
+                                        No Action
+
+                                    </button>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% empty %}
+
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="empty"
+                            >
+
+                                <div class="empty-icon">
+                                    📋
+                                </div>
+
+                                <strong>
+                                    No blood requests found.
+                                </strong>
+
+                                <p style="margin-top: 8px;">
+                                    There are currently no requests matching your filters.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>
